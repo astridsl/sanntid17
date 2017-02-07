@@ -2,12 +2,17 @@ package main
 
 import (
 	"fmt"
-	"./Network"
+	//"./Network"
+	"./Interface/driver"
+	"C"
 )
 
 func main() {
 	fmt.Println("Hello Github!")
 
-	Netmain.Netmain() 
+	C.elev.elev_init()
+
+
+	//Netmain.Netmain() 
 }
 
