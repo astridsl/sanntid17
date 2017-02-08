@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
-	//"./Network"
 	"./Interface/driver"
+	"./Network"
 	"C"
+	"fmt"
 )
 
 func main() {
@@ -12,7 +12,5 @@ func main() {
 
 	C.elev.elev_init()
 
-
-	//Netmain.Netmain() 
+	Netmain.Netmain()
 }
-
