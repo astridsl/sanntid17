@@ -42,7 +42,7 @@ func Elev_init() int {
 	return init_success
 }
 
-func elev_set_motor_direction(dirn int) {
+func Elev_set_motor_direction(dirn int) {
 	if dirn == 0 {
 		io_write_analog(MOTOR, 0)
 	} else if dirn > 0 {

@@ -11,5 +11,6 @@ func main() {
 
 	driver.Elev_init()
 
+	driver.Elev_set_motor_direction(-1)
 	//Netmain.Netmain()
 }
