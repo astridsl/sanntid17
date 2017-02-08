@@ -3,6 +3,7 @@
 
 #include "elev.h"
 
+/*
 int main() {
     elev_init();
 
@@ -25,3 +26,4 @@ int main() {
         }
     }
 }
+*/

@@ -2,15 +2,14 @@ package main
 
 import (
 	"./Interface/driver"
-	"./Network"
-	"C"
+	//"./Network"
 	"fmt"
 )
 
 func main() {
 	fmt.Println("Hello Github!")
 
-	C.elev.elev_init()
+	driver.Elev_init()
 
-	Netmain.Netmain()
+	//Netmain.Netmain()
 }
