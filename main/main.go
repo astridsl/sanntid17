@@ -2,7 +2,7 @@ package main
 
 import (
 	//"./Interface/driver"
-	"./Network"
+	"../Network"
 	"fmt"
 )
 
@@ -12,5 +12,5 @@ func main() {
 	//driver.Elev_init()
 
 	//driver.Elev_set_motor_direction(-1)
-	Netmain.Netmain()
+	Network.UDP1()
 }
