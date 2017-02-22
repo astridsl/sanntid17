@@ -1,7 +1,7 @@
-package udp
+package Network
 
 import (
-	def "config"
+	//def "config"
 	"encoding/json"
 	"fmt"
 	"net"
@@ -12,7 +12,7 @@ const (
 	PORT = ":20909"
 )
 
-func UDPSender(channel chan def.Message) {
+func UDPSender(channel chan Message) {
 	broadcastAddr := []string{"129.241.187.255", PORT}
 	broadcastUDP, _ := net.ResolveUDPAddr("udp", strings.Join(broadcastAddr, ""))
 	broadcastConn, _ := net.DialUDP("udp", nil, broadcastUDP)
@@ -25,7 +25,7 @@ func UDPSender(channel chan def.Message) {
 	}
 }
 
-func UDPListener(channel chan def.Message) {
+func UDPListener(channel chan Message) {
 	UDPReceiveAddr, err := net.ResolveUDPAddr("udp", PORT)
 	if err != nil {
 		fmt.Println(err)
@@ -39,7 +39,7 @@ func UDPListener(channel chan def.Message) {
 
 	buf := make([]byte, 2048)
 	trimmed_buf := make([]byte, 1)
-	var received_message def.Message
+	var received_message Message
 
 	for {
 		n, _, _ := UDPConn.ReadFromUDP(buf)

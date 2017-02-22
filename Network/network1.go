@@ -1,24 +1,25 @@
-package network
+package Network
 
 import (
-	def "config"
+	//def "config"
 	"net"
 	"time"
-	"udp"
+
+	//"udp"
 )
 
 var elev_timers map[int]*time.Timer
 
-func NetworkManager(elevToNetwork chan def.Message, networkToElev chan def.Message) {
+func NetworkManager(elevToNetwork chan Message, networkToElev chan Message) {
 	addr, _ := net.InterfaceAddrs()
 	myID := int(addr[1].String()[12]-'0')*100 + int(addr[1].String()[13]-'0')*10 + int(addr[1].String()[14]-'0')
 
-	UDPsend := make(chan def.Message, 100)
-	UDPreceive := make(chan def.Message, 100)
+	UDPsend := make(chan Message, 100)
+	UDPreceive := make(chan Message, 100)
 
 	go broadcastIP(myID, UDPsend)
-	go udp.UDPListener(UDPreceive)
-	go udp.UDPSender(UDPsend)
+	go UDPListener(UDPreceive) //Blir feil her
+	go UDPSender(UDPsend)      //Blir feil her
 
 	elev_timers = make(map[int]*time.Timer)
 
@@ -27,13 +28,13 @@ func NetworkManager(elevToNetwork chan def.Message, networkToElev chan def.Messa
 		case message := <-UDPreceive:
 			_, present := elev_timers[message.Source]
 
-			if message.Category == def.IP {
+			if message.Category == IP {
 				if message.Source != myID {
 					if present {
 						elev_timers[message.Source].Reset(2 * time.Second)
 					} else {
 						elev_timers[message.Source] = time.AfterFunc(2*time.Second, func() { remove_elev(message.Source, elevToNetwork) })
-						networkToElev <- def.Message{Source: message.Source, Category: def.ElevAddedToNetwork}
+						networkToElev <- Message{Source: message.Source, Category: ElevAddedToNetwork}
 					}
 				}
 				break
@@ -46,14 +47,14 @@ func NetworkManager(elevToNetwork chan def.Message, networkToElev chan def.Messa
 	}
 }
 
-func broadcastIP(ID int, UDPsend chan def.Message) {
+func broadcastIP(ID int, UDPsend chan Message) {
 	for {
-		UDPsend <- def.Message{Source: ID, Category: def.IP}
+		UDPsend <- Message{Source: ID, Category: IP}
 		time.Sleep(100 * time.Millisecond)
 	}
 }
 
-func remove_elev(ID int, networkToElev chan def.Message) {
+func remove_elev(ID int, networkToElev chan Message) {
 	delete(elev_timers, ID)
-	networkToElev <- def.Message{Source: ID, Category: def.ElevRemovedFromNetwork}
+	networkToElev <- Message{Source: ID, Category: ElevRemovedFromNetwork}
 }
