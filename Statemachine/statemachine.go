@@ -16,14 +16,13 @@ func  initialize(){
 	currentFloor = elev_get_floor_sensor_signal()
 	if currentFloor == -1{
 		elev_set_motor_direction(DIRN_DOWN)
-		for(){
+		for{
 			if currentFloor == -1 {
 				currentFloor = elev_get_floor_sensor_signal()
 			}
-			else {
+			else{
 				break
 			}
-			
 		}
 		elev_set_motor_direction(DIRN_STOP)
 	}
