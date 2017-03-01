@@ -36,7 +36,7 @@ func Elev_init() int {
 		}
 	}
 
-	elev_set_stop_lamp(0)
+	Elev_set_stop_lamp(0)
 	elev_set_door_open_lamp(0)
 	elev_set_floor_indicator(0)
 	return init_success
@@ -87,7 +87,7 @@ func elev_set_door_open_lamp(value int) {
 	}
 }
 
-func elev_set_stop_lamp(value int) {
+func Elev_set_stop_lamp(value int) {
 	if value != 0 {
 		io_set_bit(LIGHT_STOP)
 	} else {
@@ -121,3 +121,15 @@ func elev_get_stop_signal() int {
 func elev_get_obstruction_signal() int {
 	return io_read_bit(OBSTRUCTION)
 }
+
+
+type Message stuct{
+	Id string
+	Msg int 
+}
+
+switch message.id
+
+case 10:
+
+case 21: 
