@@ -43,7 +43,7 @@ func Init() (int, error) {
 
 			}
 			SetMotorDirection(def.MotorD_stop)
-			SetFloortIndicator(floor)
+			FloortIndicator(floor)
 			return floor, nil
 		}
 	}
