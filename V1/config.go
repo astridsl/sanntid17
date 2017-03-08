@@ -1,6 +1,4 @@
-package V1 
-
-package config
+package V1
 
 const N_FLOORS = 4
 const N_BUTTONS = 3
