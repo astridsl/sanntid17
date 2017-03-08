@@ -1,5 +1,7 @@
 package queue
 
+//NB: MÅ HUSKE Å ENDRE DE VARIABLENE SOM HØRER TIL config (HAR def. FORANN). KAN VÆRE AT VI MÅ TA BORT def.
+
 import (
 
 )
@@ -20,19 +22,19 @@ func Init(tempNewOrder chan bool) {
 	newOrder = tempNewOrder //Get new order
 	readFromFile() //Get internal backup
 	//Set button lamp
-	for i := 0; i < def.N_FLOORS; i++ {
+	for f := 0; f < def.N_FLOORS; f++ {
 		//Check if button is selected
-		if localQueue[i][def.Button_Command]==1{
-			driver.SetButtonLight(i, def.Button_Command, true) //!!!BRUKT driver.go
+		if localQueue[f][def.Button_Command]==1{
+			elev.SetButtonLight(i, def.Button_Command, true) //!!!BRUKT driver.go
 			newOrder <- true
 		}
 		//NY KODE! NB: KAN VÆRE AT DENNE MÅ ENDRES/FJERNES
-		if localQueue[i][def.Button_Up]==1{
-			driver.SetButtonLight(i, def.Button_Up, true) //!!!BRUKT driver.go
+		if localQueue[f][def.Button_Up]==1{
+			elev.SetButtonLight(i, def.Button_Up, true) //!!!BRUKT driver.go
 			newOrder <- true
 		}
-		if localQueue[i][def.Button_Down]==1{
-			driver.SetButtonLight(i, def.Button_Down, true) //!!!BRUKT driver.go
+		if localQueue[f][def.Button_Down]==1{
+			elev.SetButtonLight(f, def.Button_Down, true) //!!!BRUKT driver.go
 			newOrder <- true
 		}
 		//NY KODE FERDIG!
@@ -40,6 +42,7 @@ func Init(tempNewOrder chan bool) {
 
 }
 
+//old: AddToLocalQueue()
 func AddOrderToLocalQueue(floor int, button int){
 	localQueue[floor][button] = 1
 	driver.SetButtonLight(floor,button,true)
@@ -47,10 +50,42 @@ func AddOrderToLocalQueue(floor int, button int){
 	writeToFile() //Update backup
 }
 
-func DelLocalOrderFromQueueAtFloor(floor int){
-	
+//old: RemoveLocalOrderAtFloor()
+func DelLocalOrdersAtFloorFromQueue(floor int){
+	for b := 0; b < def.N_BUTTONS; b++ {
+		localQueue[floor][b]=0; //Delete all local orders at a given floor.
+		elev.SetButtonLight(floor,b,false)//Turn off elevator light indecating that there are no orders on this floor.
+	}
+	writeToFile() //Update backup.
 
 }
+
+//old: ChooseDirection()
+func ChooseElevDirection() {
+	
+}
+
+//old ShouldStop()
+func ElevShouldStop() {
+	
+}
+
+//old: ordersAboveExist()
+func existsOrdersAbove() {
+	
+}
+
+//old: ordersBelowExist()
+func existsOrdersBelow() {
+	
+}
+
+//????????????????
+func isOrderAt() {
+	
+}
+
+
 
 
 
