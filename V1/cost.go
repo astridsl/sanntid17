@@ -30,7 +30,7 @@ func (nm *networkManager) costFunction(ID int, orderButton int, orderFloor int) 
 	state := nm.statuses[ID].CurrentState 
 	cost := 0 
 
-	if lastFloor == orderFloor && dir == def.MD_stop{
+	if lastFloor == orderFloor && dir == def.MotorD_stop{
 		return cost 
 	}
 	if nm.extOrders[orderFloor][def.Button_Up] ==ID || nm.extOrders[orderFloor][def.Button_Down] == ID {
@@ -40,7 +40,7 @@ func (nm *networkManager) costFunction(ID int, orderButton int, orderFloor int) 
 	if state == 0{
 		cost = int(math.Abs(float64(lastFloor - orderFloor)))
 	}
-	else if lastFloor < orderFloor && dir == def.MD_up && orderButton == def.Button_Up || orderFloor < lastFloor && orderButton == def.Button_Down{
+	else if lastFloor < orderFloor && dir == def.MotorD_up && orderButton == def.Button_Up || orderFloor < lastFloor && orderButton == def.Button_Down{
 		cost = int(math.Abs(float64(orderFloor - lastFloor)))
 	} else {
 		cost = 5 
