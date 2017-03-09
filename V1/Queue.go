@@ -61,8 +61,14 @@ func DelLocalOrdersAtFloorFromQueue(floor int){
 }
 
 //old: ChooseDirection()
-func ChooseElevDirection() {
-	
+func ChooseElevDirection(floor int, dir def.MotorDirection) (def.MotorDirection, def.MotorDirection) {
+	switch direction {
+	case def.MotorD_down:
+
+	case def.MotorD_up:
+
+	case def.MotorD_stop:
+	}
 }
 
 //old ShouldStop()
