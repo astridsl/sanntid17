@@ -61,13 +61,32 @@ func DelLocalOrdersAtFloorFromQueue(floor int){
 }
 
 //old: ChooseDirection()
-func ChooseElevDirection(floor int, dir def.MotorDirection) (def.MotorDirection, def.MotorDirection) {
+func ChooseElevDirection(floor int, direction def.MotorDirection) (def.MotorDirection, def.MotorDirection) {
 	switch direction {
 	case def.MotorD_down:
+		if existsOrdersBelow(floor)==true && floor > 0 {
+			return def.MotorD_down, def.MotorD_down
+		}
+		else if existsOrdersAbove(floor)==true && floor<def.N_FLOORS-1 {
+			return def.MotorD_up, def.MotorD_up
+		}
+		else {
+			return def.MotorD_stop, def.MotorD_down
+		}
 
 	case def.MotorD_up:
+		if existsOrdersAbove(floor)==true && floor<def.N_FLOORS-1 {
+			return def.MotorD_up, def.MotorD_up
+		}
+		else if existsOrdersBelow(floor)==true && floor>0 {
+			return def.MotorD_down, def.MotorD_down
+		}
+		else {
+			return def.MotorD_stop, def.MotorD_up
+		}
 
-	case def.MotorD_stop:
+	default:
+		return def.MotorD_stop, def.MotorD_up
 	}
 }
 
@@ -77,13 +96,37 @@ func ElevShouldStop() {
 }
 
 //old: ordersAboveExist()
-func existsOrdersAbove() {
-	
+func existsOrdersAbove(floor int) bool {
+	if floor < def.N_FLOORS-1 {
+		for f := floor+1; f < def.N_FLOORS; f++ {
+			for b := 0; b < def.N_BUTTONS; b++ {
+				if localQueue[f][b]==1 {
+					return true
+				}
+			}
+		}
+	}
+	else {
+		return false
+	}
+	return false
 }
 
 //old: ordersBelowExist()
-func existsOrdersBelow() {
-	
+func existsOrdersBelow(floor int) bool {
+	if floor > 0 {
+		for f := floor-1; f > -1 ; f-- { 
+			for b := 0; b < def.N_BUTTONS; b++ {
+				if localQueue[f][b]==1 {
+					return true
+				}
+			}
+		}
+	}
+	else {
+		return false
+	}
+	return false
 }
 
 //????????????????
@@ -119,4 +162,5 @@ func writeToFile() {
 		panic(err)
 	}
 }
+
 
