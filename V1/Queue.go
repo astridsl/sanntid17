@@ -91,8 +91,39 @@ func ChooseElevDirection(floor int, direction def.MotorDirection) (def.MotorDire
 }
 
 //old ShouldStop()
-func ElevShouldStop() {
-	
+func ElevShouldStop(floor int, direction def.MotorDirection) bool {
+	switch direction {
+	case def.MotorD_down:
+		if isOrderAtFloor(floor) || floor==0 {
+			return true
+		}
+		else {
+			return false
+		}
+
+	case def.MotorD_up:
+		if isOrderAtFloor(floor) || floor==def.N_FLOORS-1 {
+			return true
+		}
+		else {
+			return false
+		}
+
+	default:
+		return true
+
+	}
+
+}
+
+//old isOrderAt()
+func isOrderAtFloor(floor int) bool {
+	for b := 0; b < def.N_BUTTONS; b++ {
+		if localQueue[floor][b]==1 {
+			return true
+		}
+	}
+	return false
 }
 
 //old: ordersAboveExist()
@@ -130,9 +161,9 @@ func existsOrdersBelow(floor int) bool {
 }
 
 //????????????????
-func isOrderAt() {
+//func isOrderAt() {
 	
-}
+//}
 
 
 
