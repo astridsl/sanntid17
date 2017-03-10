@@ -13,7 +13,7 @@ type networkManager struct{
 }
 
 
-func AssignMaster() networkManager{ //Denne skal vel ikke være med??
+func AssignMaster() networkManager{ 
 
 	var nm networkManager 
 	nm.elevators = make([]int, 1) 
@@ -46,15 +46,13 @@ func (nm *networkManager) RemoveElevator(remElevID int, toNetwork chan def.Messa
 					if nm.extOrders[floor][button] == remElevID{
 						nm.extOrders[floor][button] = nm.masterID
 						if nm.myID == nm.masterID{
-							queue.AddToLocalQueue(floor, button) //Funksjon her, endres?? 
+							queue.AddOrderToLocalQueue(floor, button) 
 						}
 					}
 				}
 			}
 }
 		
-	
-
 
 func (nm *networkManager) AddElevator(message def.Message, toNetwork chan def.Message){
 	nm.elevators = append(nm.elevators, message.Source)
@@ -72,15 +70,16 @@ func (nm *networkManager) AddElevator(message def.Message, toNetwork chan def.Me
 	nm.masterSelect()
 }
 
+
 func (nm *networkManager) newExternalOrder(message def.Message, toNetwork chan def.Message){
-	driver.SetButtonLight(message.Floor, message.Button, true) //Driver- funskjon 
+	driver.SetButtonLight(message.Floor, message.Button, true)  
 	if nm.masterID == nm.myID && message.Target == def.MASTER {
 		target := nm.mostSuitable(message.Button, message.Floor)
 		toNetwork <- def.Message{Source: nm.myID, Category: def.NewOrder, Button: message.Button, Floor: message.Floor, Target: target}
 	} else if message.Source == nm.masterID && message.Target != def.Master {
 		nm.extOrders[message.Floor][message.Button] = message.Target 
 		if nm.myID == message.Target {
-			queue.AddToLocalQueue(message.Floor, message.Button) //Funksjon??
+			queue.AddOrderToLocalQueue(message.Floor, message.Button) 
 		}
 	}
 }
@@ -98,7 +97,7 @@ func (nm *networkManager) UpdateElevators(message def.Message){
 
 func (nm *networkManager) SendNewOrder(buttonEvent def.ButtonEvent, toNetwork chan def.Message){
 	if buttonEvent.Button == def.Button_Command{
-		queue.AddToLocalQueue(buttonEvent.Floor, buttonEvent.Button) //Funskjon??
+		queue.AddOrderToLocalQueue(buttonEvent.Floor, buttonEvent.Button) 
 	} else {
 		nm.sendOrderMessage(buttonEvent, toNetwork)
 	}
@@ -111,22 +110,22 @@ func (nm *networkManager) sendOrderComplete(floor int, toNetwork chan def.Messag
 
 func (nm *networkManager) sendUpdateStatus(toNetwork chan def.Message){
 	newStatus := def.Status{LastFloor: lastFloor, Dir: dir, CurrentState: state}
-	toNetwork <- def.Message{Source: nm.myID, Category: def.UpdateElevStatus, Status: newStatus} //se på "UpdateElevStatus"
+	toNetwork <- def.Message{Source: nm.myID, Category: def.UpdateElevStatus, Status: newStatus} 
 }
 
 func sendOrder(){
-	toNetwork <- def.Message{Source: nm.myID, Category: def.NewOrder, Button: b.Button, Floor: b.Floor, Target: def.MASTER} //Se på denne!!!
+	toNetwork <- def.Message{Source: nm.myID, Category: def.NewOrder, Button: b.Button, Floor: b.Floor, Target: def.MASTER} 
 }
 
 func (nm *networkManager) masterSelect(){ 
 	factor := 256 //Se på denne... 
 	for i := range nm.elevators{
 		if factor>nm.elevators[i]{
-			min = nm.elevators[i]	
+			factor = nm.elevators[i]	
 		}
 	}
 	nm.masterID = factor
-	fmt.Println("The new master is ", nm.masterID) //Trenger ikke å ha med denne(printfunksjon)
+	fmt.Println("The new master is ", nm.masterID) //Printfunksjon...
 
 }
 

@@ -5,7 +5,7 @@ import{
 	//Directory 
 }
 
-func (nm *networkManager) mostSuitable(orderButton int, orderFloor int) int{   //cost- module 
+func (nm *networkManager) mostSuitable(orderButton int, orderFloor int) int{   
 	var cost int 
 	minimalCost := 5 //Sjekk ut denne her, får feil her ift til decla
 	mostSuitableElevator := nm.myID
@@ -24,7 +24,7 @@ func (nm *networkManager) mostSuitable(orderButton int, orderFloor int) int{   /
 }
 
 
-func (nm *networkManager) costFunction(ID int, orderButton int, orderFloor int) int { //cost-module 
+func (nm *networkManager) costFunction(ID int, orderButton int, orderFloor int) int { 
 	lastFloor := nm.statuses[ID].LastFloor 
 	dir := nm.statuses[ID].Dir 
 	state := nm.statuses[ID].CurrentState 

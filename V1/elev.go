@@ -1,4 +1,4 @@
-eepackage V1
+package V1
 
 import (
 
@@ -22,11 +22,11 @@ func Init() (int, error) {
 
 			for i := 0; i < def.N_FLOORS; i++ {
 				for j := 0; j < def.N_BUTTONS; j++ {
-					SetButtonLight(i, j, false) //Funskjon??
+					SetButtonLight(i, j, false)
 				}
 			}
-			SetDoorOpenLight(false)            //Funskjon
-			SetMotorDirection(def.MotorD_down) //Funskjon
+			SetDoorOpenLight(false)
+			SetMotorDirection(def.MotorD_down)
 			floor := -1
 			for floor == -1 {
 				if ReadBit(SENSOR_FLOOR1) == 1 {
@@ -86,7 +86,7 @@ func FloorSensorPoller(reciever chan<- int) { //Endre navn på denne?
 	for {
 		time.Sleep(pollerRate)
 		for floor := 0; floor < def.N_FLOORS; floor++ {
-			value := ReadBit(floorSensor[floor]) //Endre på navn her!
+			value := ReadBit(floorSensor[floor])
 			if value != 0 && floor != previousFloor {
 				reciever <- floor
 				previousFloor = floor
