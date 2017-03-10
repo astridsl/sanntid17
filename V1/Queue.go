@@ -51,7 +51,7 @@ func AddOrderToLocalQueue(floor int, button int){
 }
 
 //old: RemoveLocalOrderAtFloor()
-func DelLocalOrdersAtFloorFromQueue(floor int){
+func DelLocalOrdersAtFloorFromQueue(floor int){  //Funksjonsnavn på endres! 
 	for b := 0; b < def.N_BUTTONS; b++ {
 		localQueue[floor][b]=0; //Delete all local orders at a given floor.
 		elev.SetButtonLight(floor,b,false)//Turn off elevator light indecating that there are no orders on this floor.
