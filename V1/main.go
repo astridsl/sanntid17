@@ -37,11 +37,11 @@ func main() {
 
 	for {
 		select {
-		case b := <-ButtonEvents: //Parameter b 
-			am.SendNewOrderEvent(b, ToNetwork)
+		case be := <-ButtonEvents: //Parameter b 
+			am.SendNewOrderEvent(be, ToNetwork)
 
-		case f := <-FloorArrivalEvents: //Parameter f 
-			FloorReached <- f
+		case fr := <-FloorArrivalEvents: //Parameter f 
+			FloorReached <- fr
 
 		case orderCompleteFloor := <-OrderCompleted:
 			am.SendOrderCompleteMessage(orderCompleteFloor, ToNetwork)
@@ -75,16 +75,16 @@ func main() {
 
 func safeKill() { //Vurdere denne... 
 	var c = make(chan os.Signal) //Endre c paramterer... 
-	signal.Notify(c, os.Interrupt) 
+	signal.Notify(c, os.Interrupt) //Sjekk notify- funksjon  
 	<-c 
-	driver.SetMotorDirection(def.MotorD_stop) 
-	for f := 0; f < def.N_FLOORS; f++ {
-		for b := 0; b < def.N_BUTTONS; b++ {
-			driver.SetButtonLight(f, b, false)
+	elev.SetMotorDirection(def.MotorD_stop) //directory  
+	for floor := 0; floor < def.N_FLOORS; floor++ {
+		for button := 0; button < def.N_BUTTONS; button++ {
+			elev.SetButtonLight(floor, button, false) //directory 
 		}
 	}
-	driver.SetDoorOpenLight(false)
-	fmt.Printf("Program is terminated")
+	elev.SetDoorOpenLight(false) //Sjekk directory på denne 
+	fmt.Printf("Program is terminated") //Print- funksjon... 
 	os.Exit(1)
 }
 
