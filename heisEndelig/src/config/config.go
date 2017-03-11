@@ -25,17 +25,21 @@ const (
 	DoorOpen
 )
 
+//IKKE BRUKT ENDA
+//MÅ BRUKE!!!!!!!!! NÅ ER DEN ENDELIG BRUKT OMG OMG!!!!!!!
 type ButtonEvent struct {
 	Floor  int
 	Button int
 }
 
+//IKKE BRUKT ENDA
 type Status struct {
 	LastFloor    int
 	Dir          MotorDirection
 	CurrentState State
 }
 
+//Ikke brukt enda
 type Message struct {
 	Source   int
 	Category int
@@ -48,10 +52,9 @@ type Message struct {
 //sendMsgCh := make(chan config.Message)
 //recMsgCh : = make(chan config.Message)
 
-
-
 //sendMsgCh <- Message(-1,)
 
+//IKKE BRUKT ENDA
 const (
 	// Target constant:
 	MASTER int = -1

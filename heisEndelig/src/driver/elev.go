@@ -127,3 +127,15 @@ type Message stuct{
 	Id string
 	Msg int 
 }
+
+
+func Elev_button_pushed(buttonEvents chan config.ButtonEvent){
+
+	for floor := 0; floor < config.N_FLOORS; floor++ {
+		for button := 0; button < config.N_BUTTONS; button++ {
+			if elev_get_button_signal(floor, button) == 1 {
+				ButtonEvents <- config.ButtonEvent{floor, button} 
+			}
+		}
+	}
+}
