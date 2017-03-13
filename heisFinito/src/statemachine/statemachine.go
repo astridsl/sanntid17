@@ -30,17 +30,11 @@ func Initialize() {
 		fmt.Println("Initialization failed")
 	}
 
-	fmt.Println("hei")
 	queue.DelQueue()
-	fmt.Println("queue deleted")
 	driver.Elev_set_floor_indicator(0)
-	fmt.Println("floor indicator satt")
 	CurrentFloor = driver.Elev_get_floor_sensor_signal()
-	fmt.Println("yo")
 	fmt.Println("Current floor is", CurrentFloor)
 	driver.Elev_set_motor_direction(-1)
-
-	fmt.Println("Here ")
 
 	/*if CurrentFloor == -1 {
 		driver.Elev_set_motor_direction(-1)
@@ -62,27 +56,24 @@ func Initialize() {
 		driver.Elev_set_motor_direction(0)
 	}
 
-	fmt.Println("kommer vi hit da?")
 	NextFloor = CurrentFloor
 	LastFloor = CurrentFloor
 	LastFloorStopped = CurrentFloor
 	driver.Elev_set_floor_indicator(LastFloor)
 	MotorDirection = -1
 	CurrentState = config.State_idle
-
-	fmt.Println("kommer vi hit?")
 }
 
 func evButtonSignalPressed() int {
 	for floor := 0; floor < config.N_FLOORS; floor++ {
 		if floor != 3 && driver.Elev_get_button_signal(config.Button_Up, floor) == 1 {
-			queue.AddOrderToLocalQueue(floor, 1)
+			queue.AddOrderToLocalQueue(floor, 0)
 			return 1
 		} else if floor != 0 && driver.Elev_get_button_signal(config.Button_Down, floor) == 1 {
-			queue.AddOrderToLocalQueue(floor, 2)
+			queue.AddOrderToLocalQueue(floor, 1)
 			return 1
 		} else if driver.Elev_get_button_signal(config.Button_Command, floor) == 1 {
-			queue.AddOrderToLocalQueue(floor, 3)
+			queue.AddOrderToLocalQueue(floor, 2)
 			return 1
 		}
 	}

@@ -3,7 +3,7 @@ package driver
 import (
 	"../config"
 	"fmt"
-	"time"
+	//"time"
 )
 
 const MOTOR_SPEED = 2800
@@ -72,14 +72,12 @@ func Elev_init() int {
 }
 
 func Elev_set_motor_direction(dirn int) {
-	fmt.Println("Getting in here")
 	if dirn == 0 {
 		Io_write_analog(MOTOR, 0)
 	} else if dirn == 1 {
 		Io_clear_bit(MOTORDIR)
 		Io_write_analog(MOTOR, MOTOR_SPEED)
 	} else if dirn == -1 {
-		fmt.Println("Drive down ")
 		Io_set_bit(MOTORDIR)
 		Io_write_analog(MOTOR, MOTOR_SPEED)
 	}
@@ -172,7 +170,7 @@ type Message stuct{
 }
 */
 
-func Elev_button_pushed(buttonEvents chan<- config.ButtonEvent) {
+/*func Elev_button_pushed(buttonEvents chan<- config.ButtonEvent) {
 	for {
 		for floor := 0; floor < config.N_FLOORS; floor++ {
 			if Elev_get_button_signal(config.Button_Up, floor) == 1 {
@@ -186,9 +184,9 @@ func Elev_button_pushed(buttonEvents chan<- config.ButtonEvent) {
 				if Elev_get_button_signal(button, floor) == 1 {
 					buttonEvents <- config.ButtonEvent{floor, button}
 				}
-			}*/
+			}
 		}
 		time.Sleep(30 * time.Millisecond)
 	}
 
-}
+}*/
