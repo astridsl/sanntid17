@@ -1,10 +1,12 @@
-package V1
+package config
 
 const N_FLOORS = 4
 const N_BUTTONS = 3
 
+type ElevButtonType int
+
 const (
-	Button_Up int = iota
+	Button_Up ElevButtonType = iota
 	Button_Down
 	Button_Command
 )

@@ -1,40 +1,38 @@
-package statemachine 
+package statemachine
 
-import{
+import (
 	"time"
-	//Directory 
+)
+
+func doorTimer(timeout chan bool, reset chan bool) {
+	duration := time.Second * 3
+	timer := time.NewTimer(duration)
+
+	select {
+	case <-reset:
+		timer.Reset(duration)
+
+	case <-timer.C:
+		timeout <- true
+	}
+
+	timer.Stop()
 }
 
+func orderTimer(start chan bool, stop chan bool, timeout chan bool) {
+	duration := time.Second * 3
+	timer := time.NewTimer(duration)
 
- func doorTimer(timeout chan bool, reset chan bool){
- 	duration = time.Second *3
- 	timer = time.NewTimer(duration)
+	select {
+	case <-start:
+		timer.Reset(duration)
 
- 	select {
- 		case <- reset: 
- 			time.Reset(duration)
+	case <-stop:
+		timer.Stop()
 
-		case <- time.C: 
-			timeout <- true   
- 	} 
+	case <-timer.C:
+		timeout <- true
+	}
 
- 	time.Stop()
- }
-
- func orderTimer(start chan bool, stop chan bool, timeout chan bool){
-	duration = time.Second *3
- 	timer = time.NewTimer(duration)
-
- 	select {
- 		case <- start: 
- 			time.Reset(duration)
-
-		case <- stop: 
-			time.stop()
-
-		case <- time.C: 
-			timeout <- true   
- 	} 
-
- 	time.Stop()
- }
+	timer.Stop()
+}
