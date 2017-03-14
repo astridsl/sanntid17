@@ -21,6 +21,9 @@ var LocalQueue = [config.N_FLOORS][config.N_BUTTONS]int{
 }
 
 func GetButtonPressed(floor int, button int) int {
+	if floor == -1 {
+		return -1
+	}
 	return LocalQueue[floor][button]
 }
 

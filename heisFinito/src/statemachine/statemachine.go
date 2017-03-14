@@ -146,6 +146,7 @@ func EventManager() {
 	if StopSignalPressed == 0 {
 		ButtonPressed = evButtonSignalPressed()
 		AtSelectedFloor = evAtSelectedFloor()
+
 		CurrentFloor = driver.Elev_get_floor_sensor_signal()
 		MotorDirection = ChooseMotorDirection()
 		NextFloor = queue.GetNextFloor(LastFloorStopped, MotorDirection, LastFloor, NextFloor)
