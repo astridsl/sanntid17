@@ -21,6 +21,9 @@ func main() {
 		time.Sleep(15 * time.Millisecond)
 	}
 
+	//TO DO:
+	//LAGE ET NETTVERK, BRUKE TO CHANNELS FOR SENDING OG RESCIVEING AV MELDINGER OG KJØRE NETTVERKET SOM EN GO ROUTINE I main.
+
 	/*driver.Elev_init()
 
 	if driver.Elev_init() == 0 {

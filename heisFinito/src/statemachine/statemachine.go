@@ -5,7 +5,7 @@ import (
 	"../driver"
 	"../queue"
 	"fmt"
-	"time"
+	//"time"
 )
 
 var MotorDirection int
@@ -18,17 +18,38 @@ var LastFloorStopped int
 var CurrentFloor int
 var ButtonPressed int
 var AtSelectedFloor int
-var TimeOut int
+var TimeOut int //KAN VI SLETTE DENNE??
 var StopSignalPressed int
 var CurrentState config.State
 
+//var doorTimeout chan bool
+//var doorTimerReset chan bool
+
+//var doorTimer time.Time
+
 func Initialize() {
+
+	//doorTimeout := make(chan bool)
+	//doorTimerReset := make(chan bool)
+
+	//go doorTimer(doorTimeout, doorTimerReset)
+	//go DoorTimeout()
 
 	var init_success int = driver.Io_init()
 
 	if init_success == 0 {
 		fmt.Println("Initialization failed")
 	}
+
+	for f := 0; f < config.N_FLOORS; f++ {
+		for b := 0; b < config.N_BUTTONS; b++ {
+			driver.Elev_set_button_lamp(b, f, 0)
+		}
+	}
+
+	//fmt.Println("Kommer vi hit?")
+	driver.Elev_set_stop_lamp(0)
+	driver.Elev_set_door_open_lamp(0)
 
 	queue.DelQueue()
 	driver.Elev_set_floor_indicator(0)
@@ -170,9 +191,55 @@ func DriveElevator() {
 			queue_del_one_floor();
 		}*/
 		//LITT JALLA!!
-		time.Sleep(time.Second * 3)
+		//time.Sleep(time.Second * 3)
+
+		//start timer som holder døren åpen i 3 sek:
+		//doorTimerReset <- true
+
+		/*select {
+		case <-doorTimeout:
+			driver.Elev_set_door_open_lamp(0)
+			CurrentState = config.State_idle
+		}*/
+
+		//Åpne og lukke døren
+		StartTimer_doorOpen()
+		if evIsTimeout(1) == 1 {
+			driver.Elev_set_door_open_lamp(0)
+			CurrentState = config.State_idle
+		}
+
+		//doorTimer = time.NewTimer(time.Second * 3)
+		//timer := time.NewTimer(0)
+		//timer.Stop()
+
+		//timer = time.NewTimer(time.Second * 3)
+
+		/*if ButtonPressed == 1 && NextFloor == LastFloorStopped {
+			queue.DelAllOrdersInFloor(LastFloorStopped)
+		}*/
+
+		/*select {
+		/*case <-timer.C:
 		driver.Elev_set_door_open_lamp(0)
 		CurrentState = config.State_idle
+
+		case <-time.After(time.Second * 3):
+			driver.Elev_set_door_open_lamp(0)
+			CurrentState = config.State_idle
+
+		}*/
+
+		//Håndtere ordre mens døren er åpen:
+		/*if ButtonPressed == 1 && NextFloor == LastFloorStopped {
+			timer = time.NewTimer(time.Second * 3)
+
+			select {
+			case <-timer.C:
+				driver.Elev_set_door_open_lamp(0)
+				CurrentState = config.State_idle
+			}
+		}*/
 
 	case config.State_emergency_stop:
 		if StopSignalPressed == 0 && CurrentFloor != -1 {
@@ -191,3 +258,37 @@ func DriveElevator() {
 		}
 	}
 }
+
+/*func doorTimer(timeout chan<- bool, reset <-chan bool) {
+
+	//timer := timer.NewTimer(time.Second*3)
+
+	fmt.Println("Inni timer")
+	const duration = 3 * time.Second
+
+	timer := time.NewTimer(0)
+	timer.Stop()
+
+	for {
+		select {
+		case <-timer.C:
+			fmt.Println("Inni case")
+			timeout <- true
+			timer.Stop()
+		case <-reset:
+			timer.Reset(duration)
+		}
+	}
+	fmt.Println("Utenfor case igjen")
+}
+*/
+
+/*func DoorTimeout() {
+	for {
+		select {
+		case <-timer.C:
+			driver.Elev_set_door_open_lamp(0)
+			CurrentState = config.State_idle
+		}
+	}
+}*/
