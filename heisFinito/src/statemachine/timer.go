@@ -19,9 +19,11 @@ func StartTimer_doorOpen() {
 }
 
 func StartTimer_orderTimeout(duration float64) {
-	timer_orderTimeout = time.Now()
-	timerCounting_orderTimeout = 1
-	duration_orderTimeout = duration
+	if timerCounting_orderTimeout == 0 {
+		timer_orderTimeout = time.Now()
+		timerCounting_orderTimeout = 1
+		duration_orderTimeout = duration
+	}
 }
 
 func evIsTimeout(timer int) int {

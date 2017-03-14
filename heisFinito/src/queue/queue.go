@@ -5,6 +5,7 @@ package queue
 import (
 	"../config"
 	"../driver"
+	//"io/ioutil"
 )
 
 //Defining variables
@@ -51,12 +52,14 @@ func DelAllOrdersInFloor(floor int) {
 			driver.Elev_set_button_lamp(2, floor, 0)
 		}
 	}
+	//writeToFile()
 }
 
 //KAN VÆRE AT JEG MÅ ENDRE BUTTON TIL config.ButtonType
 func AddOrderToLocalQueue(floor int, button int) {
 	LocalQueue[floor][button] = 1
 	driver.Elev_set_button_lamp(button, floor, 1)
+	//writeToFile()
 }
 
 func GetNextFloor(lastFloorStopped int, motorDirection int, lastFloor int, nextFloor int) int {
@@ -106,7 +109,8 @@ func GetNextFloor(lastFloorStopped int, motorDirection int, lastFloor int, nextF
 
 }
 
-/*//TA BORT CHANNEL SOM ARGUMENT HER??
+/*
+//TA BORT CHANNEL SOM ARGUMENT HER??
 func Init() {
 	//KODE UTEN BACKUP
 	//Sett alle button lys og hele den lokale køen til null
@@ -121,7 +125,7 @@ func Init() {
 	//newOrder = tempNewOrder //Get new order
 	//readFromFile()          //Get internal backup
 	//Set button lamp
-	/*for floor := 0; floor < config.N_FLOORS; floor++ {
+	for floor := 0; floor < config.N_FLOORS; floor++ {
 		//Check if button is selected
 		if localQueue[floor][config.Button_Command] == 1 {
 			driver.Elev_set_button_lamp(config.Button_Command, floor, true) //!!!BRUKT driver.go
@@ -250,29 +254,28 @@ func existsOrdersBelow(floor int) bool {
 	return false
 }
 
-//????????????????
-//func isOrderAt() {
-
-//}
+*/
 
 //Read/get information from backup
+
+//Backup-shit
 /*
-func readFromFile() {
+func ReadFromFile() {
 	b, err := ioutil.ReadFile("internalBackup.txt")
 	if err != nil {
 		writeToFile()
 	}
 
-	for i := 0; i < def.N_FLOORS; i++ {
-		localQueue[i][def.Button_Command] = int(b[i])
+	for i := 0; i < config.N_FLOORS; i++ {
+		LocalQueue[i][config.Button_Command] = int(b[i])
 	}
 }
 
 //Write to backup
 func writeToFile() {
-	b := make([]byte, def.N_FLOORS)
-	for i := 0; i < def.N_FLOORS; i++ {
-		b[i] = byte(localQueue[i][def.Button_Command])
+	b := make([]byte, config.N_FLOORS)
+	for i := 0; i < config.N_FLOORS; i++ {
+		b[i] = byte(LocalQueue[i][config.Button_Command])
 	}
 
 	err := ioutil.WriteFile("internalBackup.txt", b, 0644)

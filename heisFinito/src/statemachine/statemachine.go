@@ -52,6 +52,9 @@ func Initialize() {
 	driver.Elev_set_door_open_lamp(0)
 
 	queue.DelQueue()
+
+	//queue.ReadFromFile()
+
 	driver.Elev_set_floor_indicator(0)
 	CurrentFloor = driver.Elev_get_floor_sensor_signal()
 	fmt.Println("Current floor is", CurrentFloor)
@@ -114,6 +117,12 @@ func evAtSelectedFloor() int {
 }
 
 func ChooseMotorDirection() int {
+	/*if evIsTimeout(2) == 2 {
+		fmt.Println("stoooop")
+		driver.Elev_set_motor_direction(0)
+		CurrentState = config.State_undefined
+		return -1
+	}*/
 	if LastFloor == NextFloor || NextFloor == -1 {
 		driver.Elev_set_motor_direction(0)
 		if LastFloor == config.N_FLOORS-1 {
@@ -172,9 +181,16 @@ func DriveElevator() {
 			LastFloorStopped = LastFloor
 			CurrentState = config.State_door_open
 		} else if AtSelectedFloor == 0 {
+			//StartTimer_orderTimeout(5)
 			CurrentState = config.State_moving
 		}
 	case config.State_moving:
+		/*if evIsTimeout(2) == 2 {
+			fmt.Println("order use to long time")
+			driver.Elev_set_motor_direction(0)
+			//Initialize()
+			CurrentState = config.State_idle
+		}*/
 		if AtSelectedFloor == 1 {
 			//timer_start();
 			driver.Elev_set_door_open_lamp(1)
@@ -201,6 +217,9 @@ func DriveElevator() {
 			driver.Elev_set_door_open_lamp(0)
 			CurrentState = config.State_idle
 		}*/
+
+		//timerCounting_orderTimeout = 0
+		//StartTimer_orderTimeout(5)
 
 		//Åpne og lukke døren
 		StartTimer_doorOpen()

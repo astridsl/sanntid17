@@ -2,7 +2,7 @@ package driver
 
 import (
 	"../config"
-	"fmt"
+	//"fmt"
 	//"time"
 )
 
@@ -33,8 +33,7 @@ const (
 	BUTTON_COMMAND
 )*/
 
-//DENNE FUNKSJONENE ER SMOOTH:)))
-func Elev_init() int {
+/*func Elev_init() int {
 
 	var init_success int = Io_init()
 	for f := 0; f < config.N_FLOORS; f++ {
@@ -69,7 +68,7 @@ func Elev_init() int {
 	//state = config.Idle
 
 	return init_success
-}
+}*/
 
 func Elev_set_motor_direction(dirn int) {
 	if dirn == 0 {

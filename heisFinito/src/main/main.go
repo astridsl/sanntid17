@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"./Network"
+	"../Network"
 	//"../config"
 	//"../driver"
 	//"../queue"
@@ -12,6 +12,8 @@ import (
 
 func main() {
 	//driver.Elev_init()
+
+	go Network.Main()
 
 	statemachine.Initialize()
 

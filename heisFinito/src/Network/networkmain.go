@@ -1,26 +1,24 @@
-
 package Network
 
 import (
 	"fmt"
-	"time"
 	"sort"
+	"time"
 )
 
-
-func main(){
+func Main() {
 	ip := GetLocalIP()
 	fmt.Println("Local ip: ", ip)
 
 	go UdpSendAlive()
-	peerListCh := make(chan []string)//Liste med alle heisene (ip-adresse)
+	peerListCh := make(chan []string) //Liste med alle heisene (ip-adresse)
 	go UdpRecvAlive(peerListCh)
 	sendMsgCh := make(chan Msg)
 	recvMsgCh := make(chan Msg)
 	go UdpSendMsg(sendMsgCh)
 	go UdpRecvMsg(recvMsgCh)
 
-	tick := time.Tick(1*time.Second)
+	tick := time.Tick(1 * time.Second)
 
 	isMaster := false
 	peers := []string{ip} //Liste med alle ip-adressene til heisene
@@ -47,12 +45,11 @@ func main(){
 				}
 			}
 			fmt.Println("the master is: ", isMaster)
-			
+
 		case r := <-recvMsgCh:
 			fmt.Println("New msg: ", r)
 		}
 	}
-
 
 }
 
